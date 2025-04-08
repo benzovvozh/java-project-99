@@ -1,5 +1,6 @@
 spring:
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
     show-sql: true
     hibernate:
@@ -11,5 +12,6 @@ spring:
     ansi:
       enabled: always
 server:
-  address: 0.0.0.0
-  port: ${PORT:8080}
+  tomcat:
+    accesslog:
+      enabled: true
