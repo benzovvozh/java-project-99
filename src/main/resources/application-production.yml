@@ -1,0 +1,3 @@
+spring.datasource.url: jdbc:postgresql://dpg-cvqai2euk2gs73d127a0-a:5432/projectdatabase_2vqi?password=jhWRwo1SHiSii59XbvceJbEsSIZgIdJI&user=projectdatabase_2vqi_user
+spring.datasource.username: projectdatabase_2vqi_user
+spring.datasource.password: jhWRwo1SHiSii59XbvceJbEsSIZgIdJI
