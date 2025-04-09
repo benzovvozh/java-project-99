@@ -26,12 +26,12 @@ repositories {
 
 dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	 implementation("io.github.wimdeblauwe:error-handling-spring-boot-starter:4.2.0")
+	implementation("io.github.wimdeblauwe:error-handling-spring-boot-starter:4.2.0")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
-//	implementation("org.springframework.boot:spring-boot-starter-security")
-//	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 
 	implementation("org.instancio:instancio-junit:3.3.0")
@@ -51,7 +51,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 	runtimeOnly("com.h2database:h2")
-	 runtimeOnly("org.postgresql:postgresql:42.6.0")
+	runtimeOnly("org.postgresql:postgresql:42.6.0")
 }
 
 tasks.withType<Test> {
