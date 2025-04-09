@@ -38,6 +38,7 @@ public class User implements UserDetails {
     private String email;
 
     @NotBlank
+    @Column(name = "password")
     @Size(min = 3)
     @ToString.Include
     private String passwordDigest;

@@ -1,3 +1,10 @@
+logging:
+  level:
+    root: WARN
+    org:
+      springframework:
+        # web: DEBUG
+        security: DEBUG
 spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect

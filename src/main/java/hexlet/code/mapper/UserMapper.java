@@ -21,6 +21,7 @@ public abstract class UserMapper {
     @Mapping(target = "passwordDigest", source = "password")
     public abstract User map(UserCreateDTO model);
 
+    @Mapping(target = "email", source = "email")
     public abstract UserDTO map(User data);
 
     public abstract void update(UserUpdateDTO data, @MappingTarget User model);
