@@ -2,3 +2,4 @@ spring.datasource.url: jdbc:postgresql://dpg-cvqai2euk2gs73d127a0-a:5432/project
 spring.datasource.username: projectdatabase_2vqi_user
 spring.datasource.password: jhWRwo1SHiSii59XbvceJbEsSIZgIdJI
 spring.datasource.driver-class-name: org.postgresql.Driver
+spring.jpa.hibernate.ddl-auto: validate
