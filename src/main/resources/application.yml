@@ -7,11 +7,10 @@ logging:
         security: DEBUG
 spring:
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
   profiles:
       active: development
 
