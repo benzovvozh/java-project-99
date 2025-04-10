@@ -24,6 +24,8 @@ public abstract class UserMapper {
     @Mapping(target = "email", source = "email")
     public abstract UserDTO map(User data);
 
+    public abstract User map(UserDTO data);
+
     public abstract void update(UserUpdateDTO data, @MappingTarget User model);
 
     @BeforeMapping

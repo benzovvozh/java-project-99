@@ -49,8 +49,10 @@ dependencies {
 
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("net.javacrumbs.json-unit:json-unit-assertj:3.2.2")
 	testImplementation(platform("org.junit:junit-bom:5.10.0"))
 	testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+	testImplementation("org.assertj:assertj-core:3.25.3")
 
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("org.postgresql:postgresql:42.6.0")

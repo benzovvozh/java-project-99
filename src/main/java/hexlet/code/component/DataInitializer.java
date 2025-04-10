@@ -4,6 +4,7 @@ import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.CustomUserDetailsService;
 import lombok.AllArgsConstructor;
+import net.datafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -23,10 +24,12 @@ public class DataInitializer implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         var email = "hexlet@example.com";
-        var userData = new User();
-        userData.setEmail(email);
-        userData.setPasswordDigest("qwerty");
-        userService.createUser(userData);
+        if (userRepository.findByEmail(email).isEmpty()) {
+            var userData = new User();
+            userData.setEmail(email);
+            userData.setPasswordDigest("qwerty");
+            userService.createUser(userData);
+        }
 
     }
 }
