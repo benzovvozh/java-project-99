@@ -6,9 +6,11 @@ import hexlet.code.dto.UserUpdateDTO;
 import hexlet.code.exception.UserNotFoundException;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.repository.UserRepository;
+import hexlet.code.utils.UserUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,12 +22,15 @@ public class UserController {
     private UserRepository userRepository;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserUtils userUtils;
 
     @GetMapping(path = "")
     public List<UserDTO> index() {
         var list = userRepository.findAll();
-        return list.stream()
+        var result = list.stream()
                 .map(user -> userMapper.map(user)).toList();
+        return result;
     }
 
     @GetMapping(path = "/{id}")
@@ -37,7 +42,7 @@ public class UserController {
 
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO create(@Valid @RequestBody  UserCreateDTO data) {
+    public UserDTO create(@Valid @RequestBody UserCreateDTO data) {
         var user = userMapper.map(data);
         userRepository.save(user);
         return userMapper.map(user);

@@ -28,7 +28,5 @@ public class DataInitializer implements ApplicationRunner {
         userData.setPasswordDigest("qwerty");
         userService.createUser(userData);
 
-        var user = userRepository.findByEmail(email).get();
-
     }
 }
