@@ -3,6 +3,7 @@ package hexlet.code.controller;
 import hexlet.code.dto.UserCreateDTO;
 import hexlet.code.dto.UserDTO;
 import hexlet.code.dto.UserUpdateDTO;
+import hexlet.code.exception.ForbiddenException;
 import hexlet.code.exception.UserNotFoundException;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.repository.UserRepository;
@@ -25,6 +26,15 @@ public class UserController {
     @Autowired
     private UserUtils userUtils;
 
+    private boolean checkUser(Long id) {
+        var currentUserEmail = userUtils.getCurrentUser().getEmail();
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+        if (currentUserEmail.equals(user.getEmail())) {
+            return true;
+        } else return false;
+    }
+
     @GetMapping(path = "")
     public List<UserDTO> index() {
         var list = userRepository.findAll();
@@ -36,7 +46,7 @@ public class UserController {
     @GetMapping(path = "/{id}")
     public UserDTO show(@PathVariable("id") long id) {
         var user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("user with id " + id + " not found"));
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
         return userMapper.map(user);
     }
 
@@ -51,15 +61,19 @@ public class UserController {
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void destroy(@PathVariable("id") long id) {
-        userRepository.deleteById(id);
+        if (checkUser(id)) {
+            userRepository.deleteById(id);
+        } else throw new ForbiddenException("You can't delete user with id " + id + " because you are not it");
     }
 
     @PutMapping(path = "/{id}")
     public UserDTO update(@PathVariable("id") long id, @RequestBody @Valid UserUpdateDTO data) {
-        var user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
-        userMapper.update(data, user);
-        userRepository.save(user);
-        return userMapper.map(user);
+        if (checkUser(id)) {
+            var user = userRepository.findById(id)
+                    .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+            userMapper.update(data, user);
+            userRepository.save(user);
+            return userMapper.map(user);
+        } else throw new ForbiddenException("You can't update user with id " + id + " because you are not it");
     }
 }
