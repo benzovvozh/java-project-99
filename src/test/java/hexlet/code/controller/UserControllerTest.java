@@ -106,7 +106,7 @@ class UserControllerTest {
         // создаем список дто пользователей
         List<UserDTO> userDTOs = om.readValue(body, new TypeReference<>() {
         });
-        // получаем актуальный список пользователей, преобразуя ДТО
+        // получаем актуальный список пользователей, преобразуя из ДТО
         var actual = userDTOs.stream().map(p -> userMapper.map(p)).toList();
         // получаем список пользователей из базы данных
         var expected = userRepository.findAll();
@@ -140,9 +140,11 @@ class UserControllerTest {
         // отправляем запрос и ожидаем ответ 201
         mockMvc.perform(request).andExpect(status().isCreated());
         // находим пользователя по почте
-        var user = userRepository.findByEmail(newUser.getEmail()).orElseThrow(null);
+        var user = userRepository.findByEmail(newUser.getEmail()).orElse(null);
         // проверяем что не null (т.е. есть в базе данных)
         assertNotNull(user);
+        assertThat(user.getFirstName()).isEqualTo(newUser.getFirstName());
+        assertThat(user.getLastName()).isEqualTo(newUser.getLastName());
     }
 
     @Test

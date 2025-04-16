@@ -3,7 +3,6 @@ package hexlet.code.controller;
 import hexlet.code.dto.UserCreateDTO;
 import hexlet.code.dto.UserDTO;
 import hexlet.code.dto.UserUpdateDTO;
-import hexlet.code.exception.ForbiddenException;
 import hexlet.code.exception.UserNotFoundException;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.repository.UserRepository;
@@ -12,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,21 +26,19 @@ public class UserController {
     @Autowired
     private UserUtils userUtils;
 
-    private boolean checkUser(Long id) {
-        var currentUserEmail = userUtils.getCurrentUser().getEmail();
-        var user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
-        if (currentUserEmail.equals(user.getEmail())) {
-            return true;
-        } else return false;
-    }
+    private static final String ONLY_OWNER_BY_ID = """
+                @userRepository.findById(#id).get().getEmail() == authentication.getName()
+            """;
 
-    @GetMapping(path = "")
-    public List<UserDTO> index() {
-        var list = userRepository.findAll();
-        var result = list.stream()
-                .map(user -> userMapper.map(user)).toList();
-        return result;
+    @GetMapping
+    ResponseEntity<List<UserDTO>> index() {
+        var users = userRepository.findAll();
+        var result = users.stream()
+                .map(userMapper::map)
+                .toList();
+        return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(users.size()))
+                .body(result);
     }
 
     @GetMapping(path = "/{id}")
@@ -59,21 +57,20 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/{id}")
+    @PreAuthorize(ONLY_OWNER_BY_ID)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void destroy(@PathVariable("id") long id) {
-        if (checkUser(id)) {
-            userRepository.deleteById(id);
-        } else throw new ForbiddenException("You can't delete user with id " + id + " because you are not it");
+        userRepository.deleteById(id);
     }
 
     @PutMapping(path = "/{id}")
+    @PreAuthorize(ONLY_OWNER_BY_ID)
     public UserDTO update(@PathVariable("id") long id, @RequestBody @Valid UserUpdateDTO data) {
-        if (checkUser(id)) {
-            var user = userRepository.findById(id)
-                    .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
-            userMapper.update(data, user);
-            userRepository.save(user);
-            return userMapper.map(user);
-        } else throw new ForbiddenException("You can't update user with id " + id + " because you are not it");
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+        userMapper.update(data, user);
+        userRepository.save(user);
+        return userMapper.map(user);
+
     }
 }

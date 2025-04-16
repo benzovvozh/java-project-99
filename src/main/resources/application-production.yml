@@ -1,4 +1,4 @@
-spring.datasource.url: jdbc:postgresql://dpg-cvqai2euk2gs73d127a0-a:5432/projectdatabase_2vqi?password=jhWRwo1SHiSii59XbvceJbEsSIZgIdJI&user=projectdatabase_2vqi_user
-spring.datasource.username: projectdatabase_2vqi_user
-spring.datasource.password: jhWRwo1SHiSii59XbvceJbEsSIZgIdJI
+spring.datasource.url: ${JDBC_DATABASE_URL}
+spring.datasource.username: ${JDBC_DATABASE_USERNAME}
+spring.datasource.password: ${JDBC_DATABASE_PASSWORD}
 spring.datasource.driver-class-name: org.postgresql.Driver
