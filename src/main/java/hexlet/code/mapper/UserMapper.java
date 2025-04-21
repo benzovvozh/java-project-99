@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Mapper(
-        uses = {JsonNullableMapper.class},
+        uses = {JsonNullableMapper.class, ReferenceMapper.class},
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         componentModel = MappingConstants.ComponentModel.SPRING,
         unmappedTargetPolicy = ReportingPolicy.IGNORE
@@ -26,6 +26,7 @@ public abstract class UserMapper {
 
     public abstract User map(UserDTO data);
 
+    @Mapping(target = "passwordDigest", source = "password")
     public abstract void update(UserUpdateDTO data, @MappingTarget User model);
 
     @BeforeMapping
@@ -33,4 +34,13 @@ public abstract class UserMapper {
         var password = data.getPassword();
         data.setPassword(encoder.encode(password));
     }
+
+    @BeforeMapping
+    public void encryptPassword(UserUpdateDTO data) {
+        var password = data.getPassword();
+        if (password.isPresent()) {
+            data.setPassword(encoder.encode(password.get()));
+        }
+    }
+
 }

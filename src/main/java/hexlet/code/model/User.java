@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -25,7 +26,7 @@ import java.util.Collection;
 @EntityListeners(AuditingEntityListener.class)
 @ToString(includeFieldNames = true, onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class User implements UserDetails {
+public class User implements UserDetails, BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
@@ -43,6 +44,31 @@ public class User implements UserDetails {
     @ToString.Include
     private String passwordDigest;
 
+    @ToString.Include
+    private String firstName;
+
+    @ToString.Include
+    private String lastName;
+
+    @OneToMany(mappedBy = "assignee",  cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks = new ArrayList<>();
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
+    public void addTask(Task task) {
+        tasks.add(task);
+        task.setAssignee(this);
+    }
+
+    public void removeTask(Task task) {
+        tasks.remove(task);
+        task.setAssignee(null);
+    }
+
     @Override
     public String getPassword() {
         return passwordDigest;
@@ -52,18 +78,6 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
-
-    @ToString.Include
-    private String firstName;
-
-    @ToString.Include
-    private String lastName;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
 
     @Override
     public boolean isEnabled() {

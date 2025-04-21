@@ -2,56 +2,53 @@ package hexlet.code.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Table(name = "task_statuses")
+@Table(name = "tasks")
 @Getter
 @Setter
 @EntityListeners(AuditingEntityListener.class)
 @ToString(includeFieldNames = true, onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@NoArgsConstructor
-public class TaskStatus implements BaseEntity {
+public class Task implements BaseEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ToString.Include
+    private int index;
+
     @NotBlank
+    @ToString.Include
     @Size(min = 1)
-    @Column(unique = true)
     private String name;
 
-    @NotBlank
-    @Size(min = 1)
-    @Column(unique = true)
     @ToString.Include
-    private String slug;
+    private String description;
 
-    @OneToMany(mappedBy = "taskStatus", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Task> tasks = new ArrayList<>();
+    @NotNull
+    @ToString.Include
+    @ManyToOne
+    private TaskStatus taskStatus;
+
+    @ToString.Include
+    @ManyToOne
+    private User assignee;
 
     @CreatedDate
     private LocalDateTime createdAt;
 
-    public void addTask(Task task) {
-        tasks.add(task);
-        task.setTaskStatus(this);
-    }
 
-    public void removeTask(Task task) {
-        tasks.remove(task);
-        task.setAssignee(null);
-    }
 
 }

@@ -12,6 +12,11 @@ public class UserUpdateDTO {
     private JsonNullable<String> lastName;
     @Email
     private JsonNullable<String> email;
+
     @Size(min = 3)
     private JsonNullable<String> password;
+
+    public void setPassword(String password1) {
+        this.password = JsonNullable.of(password1);
+    }
 }
