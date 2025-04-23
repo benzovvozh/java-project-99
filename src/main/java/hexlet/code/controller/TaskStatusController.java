@@ -73,5 +73,6 @@ public class TaskStatusController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void destroy(@PathVariable("id") long id) {
         repository.deleteById(id);
+
     }
 }

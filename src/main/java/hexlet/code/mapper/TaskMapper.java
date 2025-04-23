@@ -9,6 +9,7 @@ import hexlet.code.model.User;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import org.mapstruct.*;
+import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(
@@ -38,12 +39,12 @@ public abstract class TaskMapper {
     @Mapping(target = "assignee.id", source = "assigneeId")
     @Mapping(target = "name", source = "title")
     @Mapping(target = "description", source = "content")
-    @Mapping(target = "taskStatus", source = "status")
+    @Mapping(target = "taskStatus", source = "status", qualifiedByName = ("slugToStatus"))
     public abstract Task map(TaskDTO data);
 
-    @Mapping(target = "assignee", source = "assigneeId")
+    @Mapping(target = "assignee", source = "assigneeId", qualifiedByName = "mapAssignee")
     @Mapping(target = "description", source = "content")
-    @Mapping(target = "taskStatus", source = "status")
+    @Mapping(target = "taskStatus", source = "status", qualifiedByName = "slugToStatus")
     @Mapping(target = "name", source = "title")
     public abstract void update(TaskUpdateDTO data, @MappingTarget Task task);
 
@@ -58,5 +59,18 @@ public abstract class TaskMapper {
         var slug = data.getSlug();
         return slug;
     }
+
+    @Named("mapAssignee")
+    public User mapAssignee(JsonNullable<Long> assigneeId) {
+        if (!assigneeId.isPresent() || assigneeId == null) {
+            return null;
+        }
+        if (assigneeId.get() == null) {
+            return null;
+        }
+        return userRepository.findById(assigneeId.get())
+                .orElseThrow();
+    }
+
 
 }
