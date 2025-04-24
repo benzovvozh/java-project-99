@@ -1,11 +1,10 @@
-package hexlet.code.dto;
+package hexlet.code.dto.Label;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class TaskStatusCreateDTO {
+public class LabelUpdateDTO {
     private String name;
-    private String slug;
 }

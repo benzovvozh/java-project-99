@@ -1,12 +1,16 @@
-package hexlet.code.dto;
+package hexlet.code.dto.Task;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import hexlet.code.model.Label;
 import lombok.Getter;
 import lombok.Setter;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PrimitiveIterator;
 
 @Getter
 @Setter
@@ -20,4 +24,5 @@ public class TaskDTO {
     private String title;
     private JsonNullable<String> content;
     private String status;
+    private List<Long> taskLabelIds = new ArrayList<>();
 }

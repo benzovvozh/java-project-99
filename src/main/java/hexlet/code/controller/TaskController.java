@@ -1,8 +1,8 @@
 package hexlet.code.controller;
 
-import hexlet.code.dto.TaskCreateDTO;
-import hexlet.code.dto.TaskDTO;
-import hexlet.code.dto.TaskUpdateDTO;
+import hexlet.code.dto.Task.TaskCreateDTO;
+import hexlet.code.dto.Task.TaskDTO;
+import hexlet.code.dto.Task.TaskUpdateDTO;
 import hexlet.code.mapper.TaskMapper;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.utils.UserUtils;
@@ -66,8 +66,10 @@ public class TaskController {
 
     @PutMapping(path = "/{id}")
     public TaskDTO update(@PathVariable("id") long id, @RequestBody @Valid TaskUpdateDTO data) {
+        var asd = data.getTaskLabelIds();
         var task = taskRepository.findById(id).orElseThrow();
         taskMapper.update(data, task);
+        var ds = task.getLabels();
         taskRepository.save(task);
         return taskMapper.map(task);
     }

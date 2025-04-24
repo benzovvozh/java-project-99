@@ -1,20 +1,17 @@
-package hexlet.code.dto;
+package hexlet.code.dto.Label;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
-import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class UserDTO {
+public class LabelDTO {
     private long id;
-    private JsonNullable<String> firstName;
-    private JsonNullable<String> lastName;
-    private String email;
+    private String name;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
+
 }

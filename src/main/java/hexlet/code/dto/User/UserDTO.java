@@ -1,18 +1,19 @@
-package hexlet.code.dto;
+package hexlet.code.dto.User;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
+import org.openapitools.jackson.nullable.JsonNullable;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class TaskStatusDTO {
+public class UserDTO {
     private long id;
+    private JsonNullable<String> firstName;
+    private JsonNullable<String> lastName;
+    private String email;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
-    private String name;
-    private String slug;
 }
