@@ -92,6 +92,7 @@ public class TaskControllerTest {
                 .ignore(Select.field(Task::getId))
                 .ignore(Select.field(Task::getCreatedAt))
                 .ignore(Select.field(Task::getIndex))
+                .ignore(Select.field(Task::getLabels))
                 .supply(Select.field(Task::getName), () -> name)
                 .supply(Select.field(Task::getDescription), () -> desc)
                 .supply(Select.field(Task::getAssignee), () -> user)
@@ -129,6 +130,30 @@ public class TaskControllerTest {
                 .toList();
         var expected = taskRepository.findAll();
         assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
+    }
+
+    @Test
+    public void testFilteredWithNameIndex() throws Exception {
+        var result = mockMvc.perform(get("/api/tasks?name="
+                        + testTask.getName()).with(token))
+                .andExpect(status().isOk())
+                .andReturn();
+        var body = result.getResponse().getContentAsString();
+        assertThatJson(body)
+                .and(v -> v.node("[0].title") // почему нужно добавлять [0]?
+                        .isEqualTo(testTask.getName()));
+    }
+
+    @Test
+    public void testFilteredWithAssigneeIdIndex() throws Exception {
+        var result = mockMvc.perform(get("/api/tasks?assigneeId="
+                        + testTask.getAssignee().getId()).with(token))
+                .andExpect(status().isOk())
+                .andReturn();
+        var body = result.getResponse().getContentAsString();
+        assertThatJson(body)
+                .and(v -> v.node("[0].assignee_id")
+                        .isEqualTo(testTask.getAssignee().getId()));
     }
 
     @Test
