@@ -36,10 +36,10 @@ public abstract class UserMapper {
     }
 
     @BeforeMapping
-    public void encryptPassword(UserUpdateDTO data) {
+    public void encryptPasswordUpdate(UserUpdateDTO data, @MappingTarget User model) {
         var password = data.getPassword();
-        if (password.isPresent()) {
-            data.setPassword(encoder.encode(password.get()));
+        if (password != null && password.isPresent()) {
+            model.setPasswordDigest(encoder.encode(password.get()));
         }
     }
 

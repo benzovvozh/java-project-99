@@ -10,7 +10,6 @@ import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.CustomUserDetailsService;
 import lombok.AllArgsConstructor;
-import net.datafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -42,7 +41,6 @@ public class DataInitializer implements ApplicationRunner {
         var task = new Task();
         var status = taskStatusRepository.findBySlug(slug).orElseThrow();
         List<Label> labels = new ArrayList<>();
-        labels.add(labelRepository.findByName("bug").orElseThrow());
         task.setName(name);
         task.setTaskStatus(status);
         task.setLabels(labels);
@@ -86,11 +84,11 @@ public class DataInitializer implements ApplicationRunner {
             createLabel("bug");
             createLabel("feature");
         }
-        if (taskRepository.findAll().isEmpty()) {
-            createTask("Homework", "draft");
-            createTask("Cleaning", "to_review");
-            createTask("Sport", "to_be_fixed");
-        }
+//        if (taskRepository.findAll().isEmpty()) {
+//            createTask("Homework", "draft");
+//            createTask("Cleaning", "to_review");
+//            createTask("Sport", "to_be_fixed");
+//        }
 
     }
 }

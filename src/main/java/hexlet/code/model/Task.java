@@ -39,7 +39,7 @@ public class Task implements BaseEntity {
 
     @NotNull
     @ToString.Include
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private TaskStatus taskStatus;
 
     @ToString.Include

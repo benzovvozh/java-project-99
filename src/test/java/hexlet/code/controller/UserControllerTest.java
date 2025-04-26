@@ -149,7 +149,6 @@ class UserControllerTest {
     public void testUpdate() throws Exception {
         var data = new HashMap<>();
         data.put("firstName", "John");
-
         var request = put("/api/users/" + testUser.getId()).with(token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));

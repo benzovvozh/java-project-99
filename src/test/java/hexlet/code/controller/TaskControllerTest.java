@@ -43,8 +43,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-
 @SpringBootTest
 @AutoConfigureMockMvc
 public class TaskControllerTest {

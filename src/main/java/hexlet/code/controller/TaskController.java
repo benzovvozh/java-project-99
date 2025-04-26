@@ -10,8 +10,6 @@ import hexlet.code.repository.TaskRepository;
 import hexlet.code.utils.UserUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +21,7 @@ import java.util.List;
 @RequestMapping("/api/tasks")
 public class TaskController {
     @Autowired
-    UserUtils userUtils;
+    private UserUtils userUtils;
     private static final String ONLY_OWNER = """
                 @userUtils.getCurrentUser().getEmail() == authentication.getName()
             """;

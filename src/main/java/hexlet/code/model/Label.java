@@ -21,7 +21,7 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(includeFieldNames = true, onlyExplicitlyIncluded = true)
-public class Label implements BaseEntity{
+public class Label implements BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -34,7 +34,17 @@ public class Label implements BaseEntity{
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @ManyToMany(mappedBy = "labels")
+    @ManyToMany(mappedBy = "labels", fetch = FetchType.EAGER)
     private List<Task> tasks = new ArrayList<>();
+
+    public void addTask(Task task) {
+        tasks.add(task);
+        task.getLabels().add(this);
+    }
+
+    public void removeTask(Task task) {
+        tasks.remove(task);
+        task.getLabels().remove(this);
+    }
 
 }

@@ -54,7 +54,7 @@ public class LabelController {
     @PutMapping(path = "/{id}")
     public LabelDTO update(@PathVariable("id") long id, @RequestBody @Valid LabelUpdateDTO data) {
         var label = labelRepository.findById(id).orElseThrow();
-        labelMapper.update(data,label);
+        labelMapper.update(data, label);
         labelRepository.save(label);
         return labelMapper.map(label);
     }

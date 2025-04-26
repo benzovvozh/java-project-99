@@ -19,11 +19,11 @@ import java.util.List;
 @RequestMapping("/api/task_statuses")
 public class TaskStatusController {
     @Autowired
-    TaskStatusRepository repository;
+    private TaskStatusRepository repository;
     @Autowired
-    UserUtils userUtils;
+    private UserUtils userUtils;
     @Autowired
-    TaskStatusMapper taskStatusMapper;
+    private TaskStatusMapper taskStatusMapper;
     private static final String ONLY_OWNER = """
                 @userUtils.getCurrentUser().getEmail() == authentication.getName()
             """;
