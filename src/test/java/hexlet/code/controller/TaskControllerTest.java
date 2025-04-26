@@ -5,15 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.Task.TaskCreateDTO;
 import hexlet.code.dto.Task.TaskDTO;
 import hexlet.code.mapper.TaskMapper;
-import hexlet.code.mapper.TaskStatusMapper;
-import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
-import hexlet.code.service.CustomUserDetailsService;
 import org.instancio.Instancio;
 import org.instancio.Select;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,40 +40,23 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-
 @SpringBootTest
 @AutoConfigureMockMvc
 public class TaskControllerTest {
     @Autowired
     private WebApplicationContext wac;
-
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private TaskStatusRepository taskStatusRepository;
     @Autowired
     private TaskRepository taskRepository;
-
-    @Autowired
-    private TaskStatusMapper taskStatusMapper;
-
-    private TaskStatus testTaskStatus;
-
     @Autowired
     private ObjectMapper om;
-
-    @Autowired
-    private UserMapper userMapper;
     @Autowired
     private TaskMapper taskMapper;
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-
 
     private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
 

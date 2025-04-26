@@ -18,9 +18,9 @@ public class UserCreateDTO {
     @Size(min = 3)
     private String password;
 
-    JsonNullable<String> firstName;
+    private JsonNullable<String> firstName;
 
-    JsonNullable<String> lastName;
+    private JsonNullable<String> lastName;
 
 
 }

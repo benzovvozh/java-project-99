@@ -21,7 +21,7 @@ public class UserUtils {
         }
         var email = authentication.getName();
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found" ));
+                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
     }
 
 }

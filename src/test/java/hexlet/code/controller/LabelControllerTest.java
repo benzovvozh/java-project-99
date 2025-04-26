@@ -1,25 +1,12 @@
 package hexlet.code.controller;
 
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.Label.LabelCreateDTO;
 import hexlet.code.dto.Label.LabelDTO;
-import hexlet.code.dto.Task.TaskCreateDTO;
-import hexlet.code.dto.Task.TaskDTO;
 import hexlet.code.mapper.LabelMapper;
-import hexlet.code.mapper.TaskMapper;
-import hexlet.code.mapper.TaskStatusMapper;
-import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.Label;
-import hexlet.code.model.Task;
-import hexlet.code.model.TaskStatus;
-import hexlet.code.model.User;
 import hexlet.code.repository.LabelRepository;
-import hexlet.code.repository.TaskRepository;
-import hexlet.code.repository.TaskStatusRepository;
-import hexlet.code.repository.UserRepository;
-import hexlet.code.service.CustomUserDetailsService;
 import org.instancio.Instancio;
 import org.instancio.Select;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,44 +36,20 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 public class LabelControllerTest {
     @Autowired
     private WebApplicationContext wac;
-
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private TaskStatusRepository taskStatusRepository;
-    @Autowired
-    private TaskRepository taskRepository;
-
-    @Autowired
-    private TaskStatusMapper taskStatusMapper;
     @Autowired
     private LabelRepository labelRepository;
-
-    private TaskStatus testTaskStatus;
-
     @Autowired
     private ObjectMapper om;
     @Autowired
     private LabelMapper labelMapper;
-
-    @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private TaskMapper taskMapper;
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-
 
     private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
 
