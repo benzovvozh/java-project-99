@@ -6,7 +6,6 @@ import hexlet.code.dto.User.UserDTO;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
-import hexlet.code.service.CustomUserDetailsService;
 import org.instancio.Instancio;
 import org.instancio.Select;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,9 +53,6 @@ class UserControllerTest {
 
     @Autowired
     private UserMapper userMapper;
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-
 
     private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
 
@@ -156,6 +152,7 @@ class UserControllerTest {
         var user = userRepository.findById(testUser.getId()).orElseThrow();
         assertThat(user.getFirstName()).isEqualTo("John");
     }
+
     @Test
     public void testDestroy() throws Exception {
         var id = testUser.getId();

@@ -5,7 +5,11 @@ import hexlet.code.dto.Label.LabelDTO;
 import hexlet.code.dto.Label.LabelUpdateDTO;
 import hexlet.code.model.Label;
 import hexlet.code.repository.LabelRepository;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(
