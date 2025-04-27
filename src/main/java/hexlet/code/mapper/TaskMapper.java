@@ -10,7 +10,6 @@ import hexlet.code.model.User;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
-import jdk.jfr.Name;
 import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,9 +62,9 @@ public abstract class TaskMapper {
 
     @Named("reverseLabels")
     public List<Long> reverseLabels(List<Label> labelList) {
-        if (labelList != null){
+        if (labelList != null) {
             List<Long> labels = new ArrayList<>();
-            for (var label: labelList){
+            for (var label : labelList) {
                 labels.add(label.getId());
             }
             return labels;
