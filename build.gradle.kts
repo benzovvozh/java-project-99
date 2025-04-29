@@ -6,6 +6,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.7"
 	id("io.freefair.lombok") version "8.10"
 	id("io.sentry.jvm.gradle") version "5.2.0"
+	id ("org.sonarqube") version "6.0.1.5171"
 }
 
 group = "hexlet.code"
@@ -61,4 +62,11 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+sonar {
+	properties {
+		property ("sonar.projectKey", "benzovvozh_java-project-99")
+		property ("sonar.organization", "benzovvozh")
+		property ("sonar.host.url", "https://sonarcloud.io")
+	}
 }
