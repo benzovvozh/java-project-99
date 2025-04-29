@@ -155,13 +155,20 @@ public class TaskControllerTest {
                 .with(token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(newTask));
-        mockMvc.perform(request)
+        var response = mockMvc.perform(request)
                 .andDo(print())
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse();
+        var body = response.getContentAsString();
         var task = taskRepository
                 .findByName(newTask.getTitle())
                 .orElseThrow();
         assertNotNull(task);
+        assertThatJson(body)
+                .isObject()
+                .containsEntry("title", newTask.getTitle())
+                .containsEntry("status", "draft");
         assertThat(task.getName()).isEqualTo(newTask.getTitle());
     }
 
