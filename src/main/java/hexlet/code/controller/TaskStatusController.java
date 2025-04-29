@@ -3,6 +3,7 @@ package hexlet.code.controller;
 import hexlet.code.dto.TaskStatus.TaskStatusCreateDTO;
 import hexlet.code.dto.TaskStatus.TaskStatusDTO;
 import hexlet.code.dto.TaskStatus.TaskStatusUpdateDTO;
+import hexlet.code.exception.UnprocessableContentException;
 import hexlet.code.mapper.TaskStatusMapper;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.utils.UserUtils;
@@ -77,7 +78,10 @@ public class TaskStatusController {
     @PreAuthorize(ONLY_OWNER)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void destroy(@PathVariable("id") long id) {
-        repository.deleteById(id);
-
+        try {
+            repository.deleteById(id);
+        } catch (Exception e) {
+            throw new UnprocessableContentException("");
+        }
     }
 }

@@ -7,6 +7,7 @@ import hexlet.code.mapper.TaskStatusMapper;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
+import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.CustomUserDetailsService;
@@ -60,6 +61,8 @@ class TaskStatusControllerTest {
     private TaskStatusMapper taskStatusMapper;
 
     private TaskStatus testTaskStatus;
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Autowired
     private ObjectMapper om;
@@ -86,6 +89,7 @@ class TaskStatusControllerTest {
 
     @BeforeEach
     public void setUp() {
+        taskRepository.deleteAll();
         taskStatusRepository.deleteAll();
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)

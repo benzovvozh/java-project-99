@@ -3,6 +3,7 @@ package hexlet.code.controller;
 import hexlet.code.dto.Label.LabelCreateDTO;
 import hexlet.code.dto.Label.LabelDTO;
 import hexlet.code.dto.Label.LabelUpdateDTO;
+import hexlet.code.exception.UnprocessableContentException;
 import hexlet.code.mapper.LabelMapper;
 import hexlet.code.repository.LabelRepository;
 import jakarta.validation.Valid;
@@ -55,7 +56,12 @@ public class LabelController {
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void destroy(@PathVariable("id") long id) {
-        labelRepository.deleteById(id);
+        var label = labelRepository.findById(id).orElseThrow();
+        if (label.getTasks().isEmpty()){
+            labelRepository.deleteById(id);
+        } else {
+            throw new UnprocessableContentException("Нельзя удалить метку связанную с задачей");
+        }
     }
 
     @PutMapping(path = "/{id}")

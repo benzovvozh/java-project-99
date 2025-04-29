@@ -32,7 +32,7 @@ public abstract class UserMapper {
 
     public abstract User map(UserDTO data);
 
-    @Mapping(target = "passwordDigest", source = "password")
+    @Mapping(target = "passwordDigest", source = "password", ignore = true)
     public abstract void update(UserUpdateDTO data, @MappingTarget User model);
 
     @BeforeMapping

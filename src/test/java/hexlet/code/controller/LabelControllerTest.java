@@ -149,7 +149,7 @@ public class LabelControllerTest {
                 .andExpect(status().isCreated());
         var label1 = labelRepository
                 .findByName(label.getName())
-                .orElseThrow();
+                .orElse(null);
         assertNotNull(label1);
         assertThat(label1.getName()).isEqualTo(label.getName());
     }
