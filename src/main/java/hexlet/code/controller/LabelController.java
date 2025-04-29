@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RequestBody;
+
 import java.util.List;
 
 @RestController
@@ -57,7 +58,7 @@ public class LabelController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void destroy(@PathVariable("id") long id) {
         var label = labelRepository.findById(id).orElseThrow();
-        if (label.getTasks().isEmpty()){
+        if (label.getTasks().isEmpty()) {
             labelRepository.deleteById(id);
         } else {
             throw new UnprocessableContentException("Нельзя удалить метку связанную с задачей");
