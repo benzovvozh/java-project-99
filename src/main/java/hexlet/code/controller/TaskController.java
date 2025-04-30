@@ -30,9 +30,9 @@ import java.util.List;
 public class TaskController {
     @Autowired
     private UserUtils userUtils;
-    private static final String ONLY_OWNER = """
-                @userUtils.getCurrentUser().getEmail() == authentication.getName()
-            """;
+//    private static final String ONLY_OWNER = """
+//                @userUtils.getCurrentUser().getEmail() == authentication.getName()
+//            """;
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
@@ -64,7 +64,7 @@ public class TaskController {
 //    }
 
     @GetMapping(path = "/{id}")
-//    @PreAuthorize(ONLY_OWNER)
+    @PreAuthorize("isAuthenticated()")
     public TaskDTO show(@PathVariable("id") long id) {
         var task = taskRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("not found"));
@@ -72,7 +72,7 @@ public class TaskController {
     }
 
     @PostMapping(path = "")
-    @PreAuthorize(ONLY_OWNER)
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.CREATED)
     public TaskDTO create(@RequestBody @Valid TaskCreateDTO data) {
         var task = taskMapper.map(data);
@@ -81,13 +81,14 @@ public class TaskController {
     }
 
     @DeleteMapping(path = "/{id}")
-    @PreAuthorize(ONLY_OWNER)
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void destroy(@PathVariable("id") long id) {
         taskRepository.deleteById(id);
     }
 
     @PutMapping(path = "/{id}")
+    @PreAuthorize("isAuthenticated()")
     public TaskDTO update(@PathVariable("id") long id, @RequestBody @Valid TaskUpdateDTO data) {
         var task = taskRepository.findById(id).orElseThrow();
         taskMapper.update(data, task);
