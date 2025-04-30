@@ -33,9 +33,9 @@ public class TaskStatusController {
     private UserUtils userUtils;
     @Autowired
     private TaskStatusMapper taskStatusMapper;
-    private static final String ONLY_OWNER = """
-                @userUtils.getCurrentUser().getEmail() == authentication.getName()
-            """;
+//    private static final String ONLY_OWNER = """
+//                @userUtils.getCurrentUser().getEmail() == authentication.getName()
+//            """;
 
     @GetMapping(path = "")
     ResponseEntity<List<TaskStatusDTO>> index() {
@@ -49,6 +49,7 @@ public class TaskStatusController {
     }
 
     @GetMapping(path = "/{id}")
+    @PreAuthorize("isAuthenticated()")
     public TaskStatusDTO show(@PathVariable("id") long id) {
         var taskStatus = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Task status with id " + id + " not found"));
@@ -57,7 +58,7 @@ public class TaskStatusController {
 
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize(ONLY_OWNER)
+    @PreAuthorize("isAuthenticated()")
     public TaskStatusDTO create(@Valid @RequestBody TaskStatusCreateDTO data) {
         var taskStatus = taskStatusMapper.map(data);
         repository.save(taskStatus);
@@ -65,7 +66,7 @@ public class TaskStatusController {
     }
 
     @PutMapping(path = "/{id}")
-    @PreAuthorize(ONLY_OWNER)
+    @PreAuthorize("isAuthenticated()")
     public TaskStatusDTO update(@PathVariable("id") long id, @RequestBody @Valid TaskStatusUpdateDTO data) {
         var taskStatus = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Task status with id " + id + " not found"));
@@ -75,7 +76,7 @@ public class TaskStatusController {
     }
 
     @DeleteMapping(path = "/{id}")
-    @PreAuthorize(ONLY_OWNER)
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void destroy(@PathVariable("id") long id) {
         try {
