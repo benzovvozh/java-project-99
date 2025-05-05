@@ -35,7 +35,7 @@ public class Label implements BaseEntity {
     @CreatedDate
     private LocalDate createdAt;
 
-    @ManyToMany(mappedBy = "labels", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "labels", fetch = FetchType.LAZY)
     private List<Task> tasks = new ArrayList<>();
 
     public void addTask(Task task) {
