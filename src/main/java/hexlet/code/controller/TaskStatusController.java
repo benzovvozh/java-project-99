@@ -12,7 +12,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,7 +46,6 @@ public class TaskStatusController {
     }
 
     @GetMapping(path = "/{id}")
-    @PreAuthorize("isAuthenticated()")
     public TaskStatusDTO show(@PathVariable("id") long id) {
         var taskStatus = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Task status with id " + id + " not found"));
@@ -56,7 +54,6 @@ public class TaskStatusController {
 
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("isAuthenticated()")
     public TaskStatusDTO create(@Valid @RequestBody TaskStatusCreateDTO data) {
         var taskStatus = taskStatusMapper.map(data);
         repository.save(taskStatus);
@@ -64,7 +61,6 @@ public class TaskStatusController {
     }
 
     @PutMapping(path = "/{id}")
-    @PreAuthorize("isAuthenticated()")
     public TaskStatusDTO update(@PathVariable("id") long id, @RequestBody @Valid TaskStatusUpdateDTO data) {
         var taskStatus = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Task status with id " + id + " not found"));
@@ -74,7 +70,6 @@ public class TaskStatusController {
     }
 
     @DeleteMapping(path = "/{id}")
-    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void destroy(@PathVariable("id") long id) {
         try {
