@@ -51,7 +51,6 @@ public class TaskController {
     }
 
     @GetMapping(path = "/{id}")
-    @PreAuthorize("isAuthenticated()")
     public TaskDTO show(@PathVariable("id") long id) {
         var task = taskRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Not found"));
@@ -59,7 +58,6 @@ public class TaskController {
     }
 
     @PostMapping(path = "")
-    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.CREATED)
     public TaskDTO create(@RequestBody @Valid TaskCreateDTO data) {
         var task = taskMapper.map(data);
@@ -68,14 +66,12 @@ public class TaskController {
     }
 
     @DeleteMapping(path = "/{id}")
-    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void destroy(@PathVariable("id") long id) {
         taskRepository.deleteById(id);
     }
 
     @PutMapping(path = "/{id}")
-    @PreAuthorize("isAuthenticated()")
     public TaskDTO update(@PathVariable("id") long id, @RequestBody @Valid TaskUpdateDTO data) {
         var task = taskRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Task with" + id + " not found."));
