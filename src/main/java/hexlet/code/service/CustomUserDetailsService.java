@@ -1,6 +1,6 @@
 package hexlet.code.service;
 
-import hexlet.code.exception.UserNotFoundException;
+import hexlet.code.exception.NotFoundException;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsManager {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         var user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
+                .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"));
         return user;
     }
 

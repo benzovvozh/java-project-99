@@ -1,6 +1,6 @@
 package hexlet.code.utils;
 
-import hexlet.code.exception.UserNotFoundException;
+import hexlet.code.exception.NotFoundException;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ public class UserUtils {
         }
         var email = authentication.getName();
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
+                .orElseThrow(() -> new NotFoundException("User with email " + email + " not found"));
     }
 
 }

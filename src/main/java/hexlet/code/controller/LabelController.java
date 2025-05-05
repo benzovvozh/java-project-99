@@ -3,6 +3,7 @@ package hexlet.code.controller;
 import hexlet.code.dto.Label.LabelCreateDTO;
 import hexlet.code.dto.Label.LabelDTO;
 import hexlet.code.dto.Label.LabelUpdateDTO;
+import hexlet.code.exception.NotFoundException;
 import hexlet.code.exception.UnprocessableContentException;
 import hexlet.code.mapper.LabelMapper;
 import hexlet.code.repository.LabelRepository;
@@ -42,7 +43,8 @@ public class LabelController {
 
     @GetMapping(path = "/{id}")
     public LabelDTO show(@PathVariable("id") long id) {
-        var label = labelRepository.findById(id).orElseThrow();
+        var label = labelRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Label with " + id + " not found."));
         return labelMapper.map(label);
     }
 
@@ -57,7 +59,8 @@ public class LabelController {
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void destroy(@PathVariable("id") long id) {
-        var label = labelRepository.findById(id).orElseThrow();
+        var label = labelRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Label with " + id + " not found."));
         if (label.getTasks().isEmpty()) {
             labelRepository.deleteById(id);
         } else {
@@ -67,7 +70,8 @@ public class LabelController {
 
     @PutMapping(path = "/{id}")
     public LabelDTO update(@PathVariable("id") long id, @RequestBody @Valid LabelUpdateDTO data) {
-        var label = labelRepository.findById(id).orElseThrow();
+        var label = labelRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Label with " + id + " not found."));
         labelMapper.update(data, label);
         labelRepository.save(label);
         return labelMapper.map(label);

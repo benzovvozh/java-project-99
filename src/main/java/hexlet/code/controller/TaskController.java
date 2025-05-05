@@ -5,6 +5,7 @@ import hexlet.code.dto.Task.TaskCreateDTO;
 import hexlet.code.dto.Task.TaskDTO;
 import hexlet.code.dto.Task.TaskParamsDTO;
 import hexlet.code.dto.Task.TaskUpdateDTO;
+import hexlet.code.exception.NotFoundException;
 import hexlet.code.mapper.TaskMapper;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.utils.UserUtils;
@@ -30,9 +31,6 @@ import java.util.List;
 public class TaskController {
     @Autowired
     private UserUtils userUtils;
-//    private static final String ONLY_OWNER = """
-//                @userUtils.getCurrentUser().getEmail() == authentication.getName()
-//            """;
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
@@ -51,23 +49,12 @@ public class TaskController {
                 .header("X-Total-Count", String.valueOf(tasks.size()))
                 .body(tasks);
     }
-//    @GetMapping(path = "")
-//    @ResponseStatus(HttpStatus.OK)
-//    public ResponseEntity<Page<TaskDTO>> index(TaskParamsDTO params, @RequestParam(defaultValue = "1") int page) {
-//        var spec = taskSpecification.build(params);
-//        var tasks = taskRepository.findAll(spec, PageRequest.of(page - 1, 10));
-//        var result = tasks.map(taskMapper::map);
-//        return ResponseEntity.ok()
-//                .header("X-Total-Count", String.valueOf(result.stream().toList().size()))
-//                .body(result);
-//
-//    }
 
     @GetMapping(path = "/{id}")
     @PreAuthorize("isAuthenticated()")
     public TaskDTO show(@PathVariable("id") long id) {
         var task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new NotFoundException("Not found"));
         return taskMapper.map(task);
     }
 
@@ -90,7 +77,8 @@ public class TaskController {
     @PutMapping(path = "/{id}")
     @PreAuthorize("isAuthenticated()")
     public TaskDTO update(@PathVariable("id") long id, @RequestBody @Valid TaskUpdateDTO data) {
-        var task = taskRepository.findById(id).orElseThrow();
+        var task = taskRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Task with" + id + " not found."));
         taskMapper.update(data, task);
         taskRepository.save(task);
         return taskMapper.map(task);

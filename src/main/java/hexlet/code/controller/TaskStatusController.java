@@ -3,6 +3,7 @@ package hexlet.code.controller;
 import hexlet.code.dto.TaskStatus.TaskStatusCreateDTO;
 import hexlet.code.dto.TaskStatus.TaskStatusDTO;
 import hexlet.code.dto.TaskStatus.TaskStatusUpdateDTO;
+import hexlet.code.exception.NotFoundException;
 import hexlet.code.exception.UnprocessableContentException;
 import hexlet.code.mapper.TaskStatusMapper;
 import hexlet.code.repository.TaskStatusRepository;
@@ -33,9 +34,6 @@ public class TaskStatusController {
     private UserUtils userUtils;
     @Autowired
     private TaskStatusMapper taskStatusMapper;
-//    private static final String ONLY_OWNER = """
-//                @userUtils.getCurrentUser().getEmail() == authentication.getName()
-//            """;
 
     @GetMapping(path = "")
     ResponseEntity<List<TaskStatusDTO>> index() {
@@ -52,7 +50,7 @@ public class TaskStatusController {
     @PreAuthorize("isAuthenticated()")
     public TaskStatusDTO show(@PathVariable("id") long id) {
         var taskStatus = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task status with id " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("Task status with id " + id + " not found"));
         return taskStatusMapper.map(taskStatus);
     }
 
@@ -69,7 +67,7 @@ public class TaskStatusController {
     @PreAuthorize("isAuthenticated()")
     public TaskStatusDTO update(@PathVariable("id") long id, @RequestBody @Valid TaskStatusUpdateDTO data) {
         var taskStatus = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task status with id " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("Task status with id " + id + " not found"));
         taskStatusMapper.update(data, taskStatus);
         repository.save(taskStatus);
         return taskStatusMapper.map(taskStatus);

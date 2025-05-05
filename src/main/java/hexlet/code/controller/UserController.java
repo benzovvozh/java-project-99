@@ -3,7 +3,8 @@ package hexlet.code.controller;
 import hexlet.code.dto.User.UserCreateDTO;
 import hexlet.code.dto.User.UserDTO;
 import hexlet.code.dto.User.UserUpdateDTO;
-import hexlet.code.exception.UserNotFoundException;
+import hexlet.code.exception.NotFoundException;
+
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.utils.UserUtils;
@@ -52,7 +53,7 @@ public class UserController {
     @GetMapping(path = "/{id}")
     public UserDTO show(@PathVariable("id") long id) {
         var user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("User with id " + id + " not found"));
         return userMapper.map(user);
     }
 
@@ -76,7 +77,7 @@ public class UserController {
     @PreAuthorize(ONLY_OWNER_BY_ID)
     public UserDTO update(@PathVariable("id") long id, @RequestBody @Valid UserUpdateDTO data) {
         var user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("User with id " + id + " not found"));
         userMapper.update(data, user);
         userRepository.save(user);
         return userMapper.map(user);
